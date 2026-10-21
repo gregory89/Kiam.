@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiam | Lista de regalos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --sky: #dfeefb;
+        --soft-blue: #a7c6e6;
+        --blue: #75aada;
+        --blue-dark: #446a96;
+        --beige: #f8f1eb;
+        --white: #ffffff;
+        --text: #2d3b49;
+        --muted: #69829a;
+        --success: #5ea777;
+        --danger: #d36a6a;
+        --shadow: rgba(97, 134, 170, 0.18);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: 'Nunito', sans-serif;
+        background: linear-gradient(180deg, #edf7ff 0%, #fdfaf7 100%);
+        color: var(--text);
+      }
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 16px 80px;
+      }
+      .hero {
+        background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(246,239,234,0.96));
+        border: 1px solid rgba(109, 155, 199, 0.18);
+        border-radius: 28px;
+        box-shadow: 0 24px 56px var(--shadow);
+        padding: 28px;
+        margin-bottom: 22px;
+      }
+      .badge {
+        display: inline-block;
+        background: rgba(109, 155, 199, 0.12);
+        color: var(--blue-dark);
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 18px 0 10px;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        color: var(--blue-dark);
+      }
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 1.05rem;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 20px;
+      }
+      .stat {
+        background: rgba(255,255,255,0.75);
+        border: 1px solid rgba(121,161,208,0.18);
+        border-radius: 18px;
+        padding: 18px 16px;
+        text-align: center;
+      }
+      .stat-label {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .stat-value {
+        display: block;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--blue-dark);
+        margin-top: 6px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 24px;
+      }
+      .category-list { display: flex; flex-direction: column; gap: 22px; }
+      .category {
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(121,161,208,0.18);
+        border-radius: 24px;
+        padding: 18px;
+        box-shadow: 0 18px 36px rgba(122, 169, 207, 0.08);
+      }
+      .category-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .category-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: var(--blue-dark);
+      }
+      .chip {
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: rgba(109,155,199,0.1);
+        color: var(--blue-dark);
+        font-size: 0.76rem;
+        font-weight: 800;
+      }
+      .product-list { display: flex; flex-direction: column; gap: 12px; }
+      .product {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr) 180px;
+        gap: 14px;
+        background: var(--white);
+        border: 1px solid rgba(167,198,230,0.36);
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .product img {
+        width: 100%;
+        height: 100%;
+        min-height: 120px;
+        object-fit: cover;
+        display: block;
+      }
+      .product-content {
+        padding: 14px 12px 14px 0;
+      }
+      .product-name {
+        margin: 0;
+        font-size: 1.08rem;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .product-meta {
+        margin-top: 6px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 0.76rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .stock-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+        max-width: 260px;
+      }
+      .stock-box {
+        background: #f7fbff;
+        border: 1px solid rgba(119,152,183,0.2);
+        border-radius: 12px;
+        padding: 8px 6px;
+        text-align: center;
+      }
+      .stock-box span {
+        display: block;
+      }
+      .stock-box .label {
+        font-size: 0.6rem;
+        color: var(--muted);
+      }
+      .stock-box .value {
+        font-size: 0.96rem;
+        font-weight: 800;
+        color: var(--blue-dark);
+        margin-top: 3px;
+      }
+      .status-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 8px;
+        background: linear-gradient(180deg, #f9fbff, #f5f2ef);
+        border-left: 1px solid rgba(167,198,230,0.3);
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+      .status-pill.available { background: rgba(94,167,119,0.12); color: var(--success); }
+      .status-pill.reserved { background: rgba(109,155,199,0.12); color: var(--blue-dark); }
+      .status-pill.gifted { background: rgba(211,106,106,0.12); color: var(--danger); }
+      .status-text {
+        font-size: 0.72rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .panel {
+        background: rgba(255,255,255,0.75);
+        border: 1px solid rgba(121,161,208,0.18);
+        border-radius: 22px;
+        box-shadow: 0 18px 34px rgba(122, 169, 207, 0.08);
+        padding: 18px;
+      }
+      .panel h3 {
+        margin: 0 0 14px;
+        color: var(--blue-dark);
+      }
+      .gift-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .gift-item {
+        background: #f8fbff;
+        border: 1px solid rgba(118,150,190,0.2);
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+      .gift-item strong { display: block; color: var(--blue-dark); }
+      .gift-item small { display: block; color: var(--muted); margin-top: 4px; }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .legend-item {
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .dot.available { background: var(--success); }
+      .dot.reserved { background: var(--blue); }
+      .dot.gifted { background: var(--danger); }
+      @media (max-width: 860px) {
+        .layout { grid-template-columns: 1fr; }
+        .product { grid-template-columns: 96px minmax(0,1fr); }
+        .status-box { grid-column: 1 / -1; border-left: none; border-top: 1px solid rgba(167,198,230,0.3); padding-top: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <div>
+          <span class="badge">Kiam • lista del bebé</span>
+          <h1>¡Gracias por acompañarnos!</h1>
+          <p class="subtitle">
+            Aquí puedes ver qué productos siguen disponibles, cuáles ya están reservados y qué regalos han ido llegando para Kiam.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Disponibles</span>
+            <span id="availableTotal" class="stat-value">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Reservados</span>
+            <span id="reservedTotal" class="stat-value">0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Regalados</span>
+            <span id="giftedTotal" class="stat-value">0</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section id="catalog" class="category-list"></section>
+
+        <aside class="sidebar">
+          <section class="panel">
+            <h3>Lo que ya han regalado</h3>
+            <ul id="giftList" class="gift-list"></ul>
+          </section>
+
+          <section class="panel">
+            <h3>Estado</h3>
+            <div class="legend">
+              <span class="legend-item"><span class="dot available"></span> Disponible</span>
+              <span class="legend-item"><span class="dot reserved"></span> Reservado</span>
+              <span class="legend-item"><span class="dot gifted"></span> Regalado</span>
+            </div>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      const products = [
+        { id: 1, category: 'alimentación y lactancia', name: 'Biberón de vidrio 260 ml', total: 2, available: 1, reserved: 1, gifted: 0, image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80' },
+        { id: 2, category: 'alimentación y lactancia', name: 'Leche de fórmula 800 g', total: 4, available: 2, reserved: 1, gifted: 1, image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80' },
+        { id: 3, category: 'alimentación y lactancia', name: 'Tetero eléctrico', total: 1, available: 0, reserved: 0, gifted: 1, image: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=900&q=80' },
+        { id: 4, category: 'aseo e higiene', name: 'Pañitos de bambú', total: 6, available: 3, reserved: 2, gifted: 1, image: 'https://images.unsplash.com/photo-1542272607-5f5d4a2685d8?auto=format&fit=crop&w=900&q=80' },
+        { id: 5, category: 'aseo e higiene', name: 'Crema hidratante', total: 3, available: 2, reserved: 1, gifted: 0, image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80' },
+        { id: 6, category: 'aseo e higiene', name: 'Toalla de baño', total: 2, available: 0, reserved: 0, gifted: 2, image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80' },
+        { id: 7, category: 'ropa y textiles', name: 'Body de algodón', total: 5, available: 2, reserved: 1, gifted: 2, image: 'https://images.unsplash.com/photo-1542272607-5f5d4a2685d8?auto=format&fit=crop&w=900&q=80' },
+        { id: 8, category: 'ropa y textiles', name: 'Manta de algodón', total: 4, available: 1, reserved: 1, gifted: 2, image: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=900&q=80' },
+        { id: 9, category: 'ropa y textiles', name: 'Pijama de manga corta', total: 3, available: 0, reserved: 1, gifted: 2, image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80' },
+        { id: 10, category: 'habitación y organización', name: 'Cuna portátil', total: 1, available: 0, reserved: 0, gifted: 1, image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80' },
+        { id: 11, category: 'habitación y organización', name: 'Cajón organizador', total: 2, available: 2, reserved: 0, gifted: 0, image: 'https://images.unsplash.com/photo-1542272607-5f5d4a2685d8?auto=format&fit=crop&w=900&q=80' },
+        { id: 12, category: 'habitación y organización', name: 'Lámpara de noche', total: 2, available: 1, reserved: 0, gifted: 1, image: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=900&q=80' },
+        { id: 13, category: 'transporte y paseo', name: 'Saco de paseo', total: 2, available: 1, reserved: 1, gifted: 0, image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80' },
+        { id: 14, category: 'transporte y paseo', name: 'Cochecito de paseo', total: 1, available: 0, reserved: 0, gifted: 1, image: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=900&q=80' },
+        { id: 15, category: 'transporte y paseo', name: 'Portabebés', total: 1, available: 0, reserved: 0, gifted: 1, image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80' },
+        { id: 16, category: 'pañales y artículos de uso diario', name: 'Pañales talla 1', total: 10, available: 6, reserved: 2, gifted: 2, image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80' },
+        { id: 17, category: 'pañales y artículos de uso diario', name: 'Toallitas húmedas', total: 8, available: 4, reserved: 1, gifted: 3, image: 'https://images.unsplash.com/photo-1542272607-5f5d4a2685d8?auto=format&fit=crop&w=900&q=80' },
+        { id: 18, category: 'pañales y artículos de uso diario', name: 'Bolsas de basura', total: 5, available: 3, reserved: 1, gifted: 1, image: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=900&q=80' },
+        { id: 19, category: 'cositas para mamá', name: 'Set de lactancia', total: 2, available: 1, reserved: 1, gifted: 0, image: 'https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=900&q=80' },
+        { id: 20, category: 'cositas para mamá', name: 'Almohadilla de lactancia', total: 3, available: 2, reserved: 1, gifted: 0, image: 'https://images.unsplash.com/photo-1542272607-5f5d4a2685d8?auto=format&fit=crop&w=900&q=80' },
+        { id: 21, category: 'cositas para mamá', name: 'Pañuelo de pecho', total: 4, available: 2, reserved: 1, gifted: 1, image: 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80' }
+      ];
+
+      const gifts = [
+        { guest: 'Ana', item: 'Leche de fórmula', message: '¡Con mucho cariño!' },
+        { guest: 'Luis', item: 'Body de algodón', message: 'Para esos primeros días.' },
+        { guest: 'Marta', item: 'Pañales talla 1', message: 'Para Kiam y sus papás.' },
+        { guest: 'Sofía', item: 'Cuna portátil', message: 'Para el sueño más bonito.' }
+      ];
+
+      const categoryOrder = [
+        'alimentación y lactancia',
+        'aseo e higiene',
+        'ropa y textiles',
+        'habitación y organización',
+        'transporte y paseo',
+        'pañales y artículos de uso diario',
+        'cositas para mamá'
+      ];
+
+      const groupedProducts = categoryOrder.map((category) => ({
+        category,
+        items: products.filter((item) => item.category === category)
+      }));
+
+      function statusFor(product) {
+        if (product.available <= 0) return { label: 'Regalado', className: 'gifted' };
+        if (product.reserved > 0) return { label: 'Reservado', className: 'reserved' };
+        return { label: 'Disponible', className: 'available' };
+      }
+
+      function renderCatalog() {
+        const catalog = document.getElementById('catalog');
+        catalog.innerHTML = groupedProducts.map(({ category, items }) => `
+          <section class="category">
+            <div class="category-header">
+              <h2>${category}</h2>
+              <span class="chip">${items.length} artículos</span>
+            </div>
+            <div class="product-list">
+              ${items.map((product) => {
+                const status = statusFor(product);
+                return `
+                  <article class="product">
+                    <img src="${product.image}" alt="${product.name}" />
+                    <div class="product-content">
+                      <h3 class="product-name">${product.name}</h3>
+                      <div class="product-meta">
+                        <span>${category}</span>
+                        <span>•</span>
+                        <span>${product.total} unidades</span>
+                      </div>
+                      <div class="stock-grid">
+                        <div class="stock-box">
+                          <span class="label">Inicial</span>
+                          <span class="value">${product.total}</span>
+                        </div>
+                        <div class="stock-box">
+                          <span class="label">Reservado</span>
+                          <span class="value">${product.reserved}</span>
+                        </div>
+                        <div class="stock-box">
+                          <span class="label">Disponible</span>
+                          <span class="value">${product.available}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="status-box">
+                      <span class="status-pill ${status.className}">${status.label}</span>
+                      <span class="status-text">${status.label === 'Regalado' ? 'Ya fue regalado' : status.label === 'Reservado' ? 'Alguien ya lo eligió' : 'Todavía disponible'}</span>
+                    </div>
+                  </article>
+                `;
+              }).join('')}
+            </div>
+          </section>
+        `).join('');
+
+        const totalAvailable = products.reduce((sum, item) => sum + item.available, 0);
+        const totalReserved = products.reduce((sum, item) => sum + item.reserved, 0);
+        const totalGifted = products.reduce((sum, item) => sum + item.gifted, 0);
+
+        document.getElementById('availableTotal').textContent = totalAvailable;
+        document.getElementById('reservedTotal').textContent = totalReserved;
+        document.getElementById('giftedTotal').textContent = totalGifted;
+      }
+
+      function renderGifts() {
+        const list = document.getElementById('giftList');
+        list.innerHTML = gifts.map((gift) => `
+          <li class="gift-item">
+            <strong>${gift.guest}</strong>
+            <small>${gift.item}</small>
+            <small>${gift.message}</small>
+          </li>
+        `).join('');
+      }
+
+      renderCatalog();
+      renderGifts();
+    </script>
+  </body>
+</html>
